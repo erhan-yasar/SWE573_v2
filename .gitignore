@@ -5,6 +5,7 @@
 # Ignore secret keys
 *.env
 /env
+/myenv
 
 # Ignore compiled Python files
 __pycache__/
@@ -35,3 +36,4 @@ staticfiles/
 # Ignore system files
 .DS_Store
 Thumbs.db
+
