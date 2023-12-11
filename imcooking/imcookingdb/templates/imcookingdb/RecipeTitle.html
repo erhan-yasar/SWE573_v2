@@ -1,0 +1,14 @@
+{% extends 'imcookingdb/base.html' %}
+
+{% block content %}
+    <article class="Recipe">
+        {% if recipes.published_date %}
+            <time class="date">
+                {{ recipes.published_date }}
+            </time>
+        {% endif %}
+        <h2>{{ recipes.RecipeTitle }}</h2>
+        <p>{{ recipes.RecipeIngredients|linebreaksbr }}</p>
+        <p>{{ recipes.RecipeSteppes|linebreaksbr }}</p>
+    </article>
+{% endblock %}
