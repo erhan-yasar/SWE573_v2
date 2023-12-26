@@ -1,7 +1,7 @@
 {% extends 'imcookingdb/base.html' %}
 
 {% block content %}
-    <article class="Recipe">
+    <!-- <article class="Recipe">
         {% if recipes.published_date %}
             <time class="date">
                 {{ recipes.published_date }}
@@ -10,5 +10,39 @@
         <h2>{{ recipes.RecipeTitle }}</h2>
         <p>{{ recipes.RecipeIngredients|linebreaksbr }}</p>
         <p>{{ recipes.RecipeSteppes|linebreaksbr }}</p>
-    </article>
+    </article> -->
+
+    <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ recipe.RecipeTitle }}</title>
+</head>
+<body>
+    <h1>{{ recipe.RecipeTitle }}</h1>
+    <img src="http://127.0.0.1:8000{{ recipe.RecipePhoto.url }}" alt="{{ recipe.RecipeTitle }}">
+    
+    <h2>Ingredients:</h2>
+    <ul>
+        {% for ingredient in recipe.ingredients.all %}
+            <li>{{ ingredient.name }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Steps:</h2>
+    <ol>
+        {% for step in recipe.steps.all %}
+            <li>{{ step.description }}</li>
+        {% endfor %}
+    </ol>
+
+    <!-- You can add other details like PrepTime, CookTime, Rating here -->
+    <p>Preparation Time: {{ recipe.PrepTime }}</p>
+    <p>Cooking Time: {{ recipe.CookTime }}</p>
+    <p>Rating: {{ recipe.Rating }}</p>
+</body>
+</html>
+
+
+
+
 {% endblock %}
