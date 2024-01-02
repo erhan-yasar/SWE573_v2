@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - .:/imcooking
+    # command: python manage.py runserver 127.0.0.1:8000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    ports:
+      - "8001:5433"
+    restart: always
+    
+    environment:
+      POSTGRES_DB: dbimcookingtwo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: superuser
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
