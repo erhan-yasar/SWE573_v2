@@ -19,6 +19,10 @@
 </head>
 <body>
     <h1>{{ recipe.RecipeTitle }}</h1>
+    <p>Preparation Time: {{ recipe.PrepTime }} minutes</p>
+    <p>Cooking Time: {{ recipe.CookTime }} minutes</p>
+    {% with total_time=recipe.PrepTime|add:recipe.CookTime %}
+    <p>Total Time: {{ total_time }} minutes</p>
     <img src="http://127.0.0.1:8000{{ recipe.RecipePhoto.url }}" alt="{{ recipe.RecipeTitle }}">
     
     <h2>Ingredients:</h2>
@@ -35,10 +39,8 @@
         {% endfor %}
     </ol>
 
-    <!-- You can add other details like PrepTime, CookTime, Rating here -->
-    <p>Preparation Time: {{ recipe.PrepTime }}</p>
-    <p>Cooking Time: {{ recipe.CookTime }}</p>
-    <p>Rating: {{ recipe.Rating }}</p>
+   
+{% endwith %}
 </body>
 </html>
 

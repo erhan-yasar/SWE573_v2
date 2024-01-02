@@ -68,7 +68,11 @@ h4 {
     color: #FFFFFF;
     background-color: #C25100;
 }
+.add_Rec{
+    float: right; 
+    font-size: 12px !important;
 
+}
 
 
 .card-columns {

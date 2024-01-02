@@ -11,19 +11,21 @@
         {{ recipe_form.as_p }}
         <fieldset>
             <legend>Ingredients</legend>
+            <!-- {{ ingredient_formset.management_form }}
+            {% for ingredient_form in ingredient_formset %}
+                {{ ingredient_form.as_p }}           
+            {% endfor %} -->
             {{ ingredient_formset.management_form }}
             {% for ingredient_form in ingredient_formset %}
-                {{ ingredient_form.as_p }}
-
-               
+                <p>{{ forloop.counter }}. {{ ingredient_form.name }}</p>
             {% endfor %}
         </fieldset>
         <fieldset>
             <legend>Steps</legend>
-            {{ step_formset.management_form }}
-            {% for step_form in step_formset %}
-                {{ step_form.as_p }}
-            {% endfor %}
+             {{ step_formset.management_form }}
+    {% for step_form in step_formset %}
+        <p>{{ forloop.counter }}. {{ step_form.description }}</p>
+    {% endfor %}
         </fieldset>
         <button type="submit">Submit Recipe</button>
     </form>
