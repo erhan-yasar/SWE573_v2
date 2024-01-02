@@ -21,19 +21,6 @@ class Recipe(models.Model):
     CookTime = models.IntegerField(null=True)
     Rating = models.FloatField(null=True)
 
-
-# class IngredientTypes(models.Model):
-#     TypeId = models.AutoField(primary_key=True)
-#     TypeName = models.CharField(max_length=50)
-
-# class Ingredient(models.Model):
-#     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
-#     name = models.CharField(max_length=300, null=True)
-#     type = models.ForeignKey(IngredientTypes, on_delete=models.CASCADE)
-#     Amount = models.FloatField(null=True)
-   
-
-
 class Ingredient(models.Model):
      recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
      name = models.CharField(max_length=300)
@@ -50,7 +37,15 @@ class Step(models.Model):
 #      TypeId=models.AutoField(primary_key=True)
 #      TypeName = models.CharField(max_length=50)
 
+# class IngredientTypes(models.Model):
+#     TypeId = models.AutoField(primary_key=True)
+#     TypeName = models.CharField(max_length=50)
 
+# class Ingredient(models.Model):
+#     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
+#     name = models.CharField(max_length=300, null=True)
+#     type = models.ForeignKey(IngredientTypes, on_delete=models.CASCADE)
+#     Amount = models.FloatField(null=True)
 
     
 
