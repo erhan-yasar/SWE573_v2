@@ -29,5 +29,5 @@ StepFormSet = forms.inlineformset_factory(
         'description':forms.TextInput(attrs={'size': '100',}), 
     },
     
-    extra=5, min_num=1, validate_min=False
+    extra=9, min_num=1, validate_min=False
 )
