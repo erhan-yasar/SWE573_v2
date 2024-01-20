@@ -28,7 +28,7 @@
     <h2>Ingredients:</h2>
     <ul>
         {% for ingredient in recipe.ingredients.all %}
-            <li>{{ ingredient.name }}</li>
+            <li>{{ ingredient.Amount|floatformat:2 }}          {{ ingredient.type }}         {{ ingredient.name }}</li>
         {% endfor %}
     </ul>
     

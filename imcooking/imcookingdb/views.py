@@ -63,7 +63,7 @@ def add_recipe(request):
 
             for ingredient_form in ingredient_formset:
                 if ingredient_form.cleaned_data.get('name'):
-                    Ingredient.objects.create(recipe=recipe, name=ingredient_form.cleaned_data['name'])
+                    Ingredient.objects.create(recipe=recipe, name=ingredient_form.cleaned_data['name'],Amount=ingredient_form.cleaned_data['Amount'],type=ingredient_form.cleaned_data['type'])
 
             for step_form in step_formset:
                 if step_form.cleaned_data.get('description'):

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.models import BaseModelFormSet
 
-from .models import Recipe, Ingredient, Step
+from .models import Recipe, Ingredient, Step,IngredientTypes
 
 # class PostForm(forms.ModelForm):
 
@@ -15,11 +15,26 @@ class RecipeForm(forms.ModelForm):
         fields = ['RecipeTitle', 'RecipePhoto','PrepTime','CookTime']
 
 
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ['name', 'Amount', 'type']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customize the 'type' field to be a dropdown with choices from IngredientTypes
+        self.fields['type'].queryset = IngredientTypes.objects.all()
+
+    def __str__(self):
+        return f"{self.instance.TypeId}: {self.instance.TypeName}"
+
 
 IngredientFormSet = forms.inlineformset_factory(
-    Recipe, Ingredient, fields=('name',), widgets={
+    Recipe, Ingredient,  fields=('name','Amount','type'), widgets={
         
-        'name':forms.TextInput(attrs={'size': '45',})
+        'name':forms.TextInput(attrs={'size': '30',}),
+        'Amount':forms.NumberInput(attrs={'size': '9',}),
+        'type':forms.Select(attrs={'size': '1',})
     }, extra=19, min_num=1, validate_min=False
 )
 

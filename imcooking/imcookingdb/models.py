@@ -11,7 +11,6 @@ class User(models.Model):
    UserEmail= models.CharField(max_length=100)
    UserEmail2= models.CharField(max_length=100)
 
-
 class Recipe(models.Model):
     RecipeId=models.AutoField(primary_key=True)
     RecipeTitle= models.CharField(max_length=100)
@@ -21,10 +20,18 @@ class Recipe(models.Model):
     CookTime = models.IntegerField(null=True)
     Rating = models.FloatField(null=True)
 
+
+class IngredientTypes(models.Model):
+     TypeId = models.AutoField(primary_key=True)
+     TypeName = models.CharField(max_length=50)
+
+     def __str__(self):
+        return self.TypeName
+
 class Ingredient(models.Model):
      recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
      name = models.CharField(max_length=300)
-     TypeId = models.IntegerField(null=True)
+     type = models.ForeignKey(IngredientTypes, related_name='type', null=True, on_delete=models.CASCADE)
      Amount = models.FloatField(null=True)
 
 class Step(models.Model):
@@ -37,9 +44,7 @@ class Step(models.Model):
 #      TypeId=models.AutoField(primary_key=True)
 #      TypeName = models.CharField(max_length=50)
 
-# class IngredientTypes(models.Model):
-#     TypeId = models.AutoField(primary_key=True)
-#     TypeName = models.CharField(max_length=50)
+
 
 # class Ingredient(models.Model):
 #     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)

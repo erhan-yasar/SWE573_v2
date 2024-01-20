@@ -1,6 +1,20 @@
 {% extends 'imcookingdb/base.html' %}
 
 {% block content %}
+<style>
+.button {
+  font: 18px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+  cursor:pointer;
+}
+</style>
     <h2>New Recipe</h2>
     <!-- <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
@@ -18,11 +32,16 @@
             {{ ingredient_formset.management_form }}
             {% for ingredient_form in ingredient_formset %}
             <div id="{{ forloop.counter }}_ingredientDiv" style="display: none;">
-                <p id="{{ forloop.counter }}_ingredient" >{{ forloop.counter }}. {{ ingredient_form.name }}</p>
+                <p id="{{ forloop.counter }}_ingredient" >{{ forloop.counter }}.{{ ingredient_form.Amount }}          {{ ingredient_form.type }}         {{ ingredient_form.name }}</p>
+              
             </div>
             {% endfor %}
-            <button onclick="deleteIngredientButton()">Delete</button>
-            <button onclick="addIngredientButton()">Add More</button>
+            <div style="margin-top: 32px;margin-bottom: 32px;">
+                <a onclick="addIngredientButton()"  class="button" >Add More</a>
+                <a onclick="deleteIngredientButton()"  class="button">Delete</a>
+            </div>
+           
+           
         </fieldset>
         <fieldset id="Steps">
             <legend>Steps</legend>
@@ -32,11 +51,18 @@
         <p>{{ forloop.counter }}. {{ step_form.description }}</p>
     </div>
     {% endfor %}
-    <button onclick="deleteStepButton()">Delete</button>
-    <button onclick="addStepButton()">Add More</button>
+
+    <div style="margin-top: 32px;margin-bottom: 32px;">
+        <a onclick="addStepButton()" class="button">Add More</a>
+        <a onclick="deleteStepButton()" class="button">Delete</a>
+    </div>
+    
+   
         </fieldset>
         <button type="submit">Submit Recipe</button>
     </form>
+
+ 
 
     <script>
         for(var i=1;i<4;i++){
