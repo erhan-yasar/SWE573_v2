@@ -20,7 +20,7 @@ IngredientFormSet = forms.inlineformset_factory(
     Recipe, Ingredient, fields=('name',), widgets={
         
         'name':forms.TextInput(attrs={'size': '45',})
-    }, extra=9, min_num=1, validate_min=False
+    }, extra=19, min_num=1, validate_min=False
 )
 
 StepFormSet = forms.inlineformset_factory(
@@ -29,5 +29,5 @@ StepFormSet = forms.inlineformset_factory(
         'description':forms.TextInput(attrs={'size': '100',}), 
     },
     
-    extra=9, min_num=1, validate_min=False
+    extra=19, min_num=1, validate_min=False
 )

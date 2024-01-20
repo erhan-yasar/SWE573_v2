@@ -9,7 +9,7 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ recipe_form.as_p }}
-        <fieldset>
+        <fieldset id="Ingredients">
             <legend>Ingredients</legend>
             <!-- {{ ingredient_formset.management_form }}
             {% for ingredient_form in ingredient_formset %}
@@ -17,19 +17,92 @@
             {% endfor %} -->
             {{ ingredient_formset.management_form }}
             {% for ingredient_form in ingredient_formset %}
-                <p>{{ forloop.counter }}. {{ ingredient_form.name }}</p>
+            <div id="{{ forloop.counter }}_ingredientDiv" style="display: none;">
+                <p id="{{ forloop.counter }}_ingredient" >{{ forloop.counter }}. {{ ingredient_form.name }}</p>
+            </div>
             {% endfor %}
+            <button onclick="deleteIngredientButton()">Delete</button>
+            <button onclick="addIngredientButton()">Add More</button>
         </fieldset>
-        <fieldset>
+        <fieldset id="Steps">
             <legend>Steps</legend>
              {{ step_formset.management_form }}
     {% for step_form in step_formset %}
+    <div id="{{ forloop.counter }}_stepDiv" style="display: none;">
         <p>{{ forloop.counter }}. {{ step_form.description }}</p>
+    </div>
     {% endfor %}
+    <button onclick="deleteStepButton()">Delete</button>
+    <button onclick="addStepButton()">Add More</button>
         </fieldset>
         <button type="submit">Submit Recipe</button>
     </form>
 
+    <script>
+        for(var i=1;i<4;i++){
+            document.getElementById(i.toString()+"_ingredientDiv").style.display = "block";
+            document.getElementById(i.toString()+"_stepDiv").style.display = "block";
+        }
+
+        function addIngredientButton(){
+            var array=document.getElementById("Ingredients").getElementsByTagName("div")
+            for(var i=0;i<array.length;i++){
+                if(array[i].style.display=="none"){
+                    array[i].style.display="block";
+                    break;
+                }
+            }
+        }
+
+        function deleteIngredientButton(id){
+            var array=document.getElementById("Ingredients").getElementsByTagName("div")
+            var checkCount=0;
+            for(var i=0;i<array.length;i++){
+                if(array[i].style.display=="none"){
+                    if(checkCount>1){
+                        array[i-1].style.display="none";
+                        document.getElementById("id_ingredients-"+(i-1)+"-name").value="";
+                        break;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                checkCount++;
+            }
+        }
+
+
+
+        function addStepButton(){
+            var array=document.getElementById("Steps").getElementsByTagName("div")
+            for(var i=0;i<array.length;i++){
+                if(array[i].style.display=="none"){
+                    array[i].style.display="block";
+                    break;
+                }
+            }
+        }
+
+        function deleteStepButton(id){
+            var array=document.getElementById("Steps").getElementsByTagName("div")
+            var checkCount=0;
+            for(var i=0;i<array.length;i++){
+                if(array[i].style.display=="none"){
+                    if(checkCount>1){
+                        array[i-1].style.display="none";
+                        document.getElementById("id_steps-"+(i-1)+"-description").value="";
+                        break;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                checkCount++;
+            }
+        }
+
+    </script>
 
 
 
