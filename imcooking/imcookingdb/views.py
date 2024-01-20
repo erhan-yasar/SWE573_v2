@@ -3,6 +3,9 @@ from django.utils import timezone
 from .models import Recipe, Ingredient, Step
 from .forms import RecipeForm, IngredientFormSet, StepFormSet
 from django.http import FileResponse
+from django.db.models import Q
+from django.db.models import Prefetch
+import itertools
 
 
 
@@ -15,13 +18,25 @@ from django.http import FileResponse
 # Create your views here.
 
 def post_list(request):
-    posts = Recipe.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    query = request.GET.get('q')
+    if query :
+       posts = Recipe.objects.filter(Q(RecipeTitle__icontains=query) )
+        # if query=='' and queryI:
+        #     posts = Recipe.objects.filter(published_date__lte=timezone.now()).prefetch_related(Prefetch("ingredients",queryset=Ingredient.objects.filter(name=queryI),to_attr="filtered_ingredients"))
+        #& Recipe.objects.filter(published_date__lte=timezone.now())
+    else:
+        posts = Recipe.objects.filter(published_date__lte=timezone.now())
+    posts=posts.order_by('-published_date')
     for x in posts:
         if (x.RecipePhoto):
             result=x.RecipePhoto=x.RecipePhoto.url.split('/')
             if(len(result)>2):
                 x.RecipePhoto=result[2]
     return render(request, 'imcookingdb/post_list.html', {'posts':posts })
+
+def filtering_function(obj):
+    return any(x.name == "t2" for x in obj)
+    
 
 
 def send_file(response,name):
@@ -37,7 +52,7 @@ def send_file(response,name):
 def RecipeTitle(request, pk):
     recipe = get_object_or_404(Recipe, RecipeId=pk)
     print("-----------------")
-    print(recipe.RecipeTitle)
+    print(list(recipe.ingredients.all()))
     return render(request, 'imcookingdb/RecipeTitle.html', {'recipe': recipe})
 
 # def add_recipe(request):

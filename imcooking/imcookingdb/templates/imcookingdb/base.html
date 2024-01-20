@@ -13,7 +13,11 @@
           <div class="container">
            
             <h1 style="float: right; font-size: 12px !important;"><a href="{% url 'add_recipe' %}">Add Recipe</a></h1>
-             
+            <form style="float:right; margin-top: 16px;margin-right: 16px;" method="get" action="{% url 'post_list' %}">
+                
+                <input placeholder="Search by name" type="text" id="search" name="q">
+                <button type="submit">Search</button>
+            </form>
             <h1><a href="/">I'm Cooking</a></h1>
           </div>
         </header>
