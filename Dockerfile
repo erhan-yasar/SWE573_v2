@@ -19,11 +19,13 @@ COPY . /imcooking/
 
 
 # Run migrations (apply this command during the build process)
-RUN python ./imcooking/manage.py migrate
+# RUN python ./imcooking/manage.py migrate
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 8080
 
 
 # Run the application
-CMD ["python", "./imcooking/manage.py", "runserver", "127.0.0.1:8000"]
+# CMD ["python", "./imcooking/manage.py", "migrate"] && ["python", "./imcooking/manage.py", "runserver", "127.0.0.1:8000"]
+
+CMD python ./imcooking/manage.py migrate && python ./imcooking/manage.py runserver 0.0.0.0:8080
