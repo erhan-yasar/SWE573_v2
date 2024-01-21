@@ -39,12 +39,16 @@
         {% endfor %}
     </ol>
 
-   
+    <h2>Nutritions:</h2>
+    <ol>
+        {% for ing in ings %}
+            <li>{{ ing }}</li>
+        {% endfor %}
+    </ol>
+
 {% endwith %}
 </body>
 </html>
-
-
 
 
 {% endblock %}

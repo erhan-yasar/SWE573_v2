@@ -5,6 +5,10 @@ from .forms import RecipeForm, IngredientFormSet, StepFormSet
 from django.http import FileResponse
 from django.db.models import Q
 from django.db.models import Prefetch
+
+from django.http import HttpResponse
+from django.shortcuts import render
+from urllib import request, parse
 import itertools
 
 
@@ -48,12 +52,70 @@ def send_file(response,name):
     return response
 
 
+def example_request_view(ingredients):
+    
+    url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'x-app-id': '0c2f5d87',
+        'x-app-key': '307bf80eaa5e0e027e72580d58ac62ad',
+    }
+    queryText=''
+    counter=0
+    for ing in ingredients:
+        if(counter==0):
+            queryText=str(ing.Amount)+' '+ing.type.TypeName+' '+ing.name
+        else:
+            queryText=' and '+str(ing.Amount)+' '+ing.type.TypeName+' '+ing.name
+        counter=counter+1
+    payload = {
+        'query': queryText,
+        "timezone": "Europe/Istanbul",
+        "line_delimited": False,
+        "use_raw_foods": False
+        # Add other key-value pairs as needed
+    }
+    print(queryText)
+
+    data_encoded = parse.urlencode(payload).encode('utf-8')
+
+    req = request.Request(url, data=data_encoded, headers=headers, method='POST')
+    try:
+        with request.urlopen(req) as response:
+        # Check if the request was successful (HTTP status code 2xx)
+            if 200 <= response.status < 300:
+               # Read and print the response content
+               response_data = response.read().decode('utf-8')
+               return StringToDictinory(response_data)
+              
+            else:
+                return [f"HTTP Error {response.status}: {response.reason}"]
+    except request.HTTPError as e:
+        return [f"HTTP Error {e.code}: {e.reason}"]
+    except request.URLError as e:
+        return ["URL Error: {e.reason}"]
+
+
+def StringToDictinory(text):
+    textarray=text.split(',')
+    resultList=[]
+    filteredtextarray=list(filter(lambda k: 'nf' in k, textarray))
+    for txt in filteredtextarray:
+        resultList.append(txt.replace("nf_","").replace("\"",""))
+    return resultList
+
+
 
 def RecipeTitle(request, pk):
     recipe = get_object_or_404(Recipe, RecipeId=pk)
     print("-----------------")
-    print(list(recipe.ingredients.all()))
-    return render(request, 'imcookingdb/RecipeTitle.html', {'recipe': recipe})
+    print(recipe.ingredients.all())
+    result=example_request_view(recipe.ingredients.all())
+    print("ccccccccccc")
+    print(result)
+    
+    return render(request, 'imcookingdb/RecipeTitle.html', {'recipe': recipe,'ings':result})
 
 # def add_recipe(request):
 #     if request.method == "POST":
