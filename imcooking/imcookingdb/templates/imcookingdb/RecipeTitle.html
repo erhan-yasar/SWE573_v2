@@ -41,8 +41,8 @@
 
     <h2>Nutritions:</h2>
     <ol>
-        {% for ing in ings %}
-            <li>{{ ing }}</li>
+        {% for case, total in ings %}
+            <li>{{ case }}:{{ total|floatformat:2 }}</li>
         {% endfor %}
     </ol>
 

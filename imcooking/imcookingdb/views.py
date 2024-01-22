@@ -9,16 +9,8 @@ from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import render
 from urllib import request, parse
-import itertools
-
-
-
-
-
-    
-
-
-
+import http.client
+import json
 # Create your views here.
 
 def post_list(request):
@@ -55,46 +47,100 @@ def send_file(response,name):
 def example_request_view(ingredients):
     
     url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
-
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        
         'x-app-id': '0c2f5d87',
         'x-app-key': '307bf80eaa5e0e027e72580d58ac62ad',
     }
     queryText=''
+
+
+
+
     counter=0
     for ing in ingredients:
         if(counter==0):
             queryText=str(ing.Amount)+' '+ing.type.TypeName+' '+ing.name
         else:
-            queryText=' and '+str(ing.Amount)+' '+ing.type.TypeName+' '+ing.name
+            queryText=queryText+', '+str(ing.Amount)+' '+ing.type.TypeName+' '+ing.name
         counter=counter+1
     payload = {
         'query': queryText,
         "timezone": "Europe/Istanbul",
         "line_delimited": False,
         "use_raw_foods": False
-        # Add other key-value pairs as needed
     }
+    json_data = json.dumps(payload)
     print(queryText)
+    sums = {}
 
-    data_encoded = parse.urlencode(payload).encode('utf-8')
+    if queryText!="":
+        connection = http.client.HTTPSConnection('trackapi.nutritionix.com')
+        connection.request('POST', url, body=json_data, headers=headers)
+        response = connection.getresponse()
+        if(response.status>=200  and response.status<300):
+            content = response.read()
+            connection.close()
 
-    req = request.Request(url, data=data_encoded, headers=headers, method='POST')
-    try:
-        with request.urlopen(req) as response:
-        # Check if the request was successful (HTTP status code 2xx)
-            if 200 <= response.status < 300:
-               # Read and print the response content
-               response_data = response.read().decode('utf-8')
-               return StringToDictinory(response_data)
+
+            # Initialize a dictionary to store the sums for each case
+
+            resultArry=[]
+            print(content.decode('utf-8'))
+            types=['cal','g','g','mg','mg','g','g','g','g','mg','mg']
+
+            # Iterate through each element in the array
+            for item in StringToDictinory(content.decode('utf-8')):
+                # Split the element using ":"
+                parts = item.split(":")
+
+                # Extract the case and value
+                case = parts[0]
+                value = float(parts[1])
+
+                # Add the value to the sum for the corresponding case
+                if case in sums:
+                    sums[case] += value
+                else:
+                    sums[case] = value
+
+            # Print the sums for each casecount()
+            count=0
+            for case, total in sums.items():
+
+
+                sums[case+"("+types[count]+")"] = sums.pop(case)
+                count=count+1
+                resultArry.append(str(case)+':'+str(total))
+                print(f"{case}: {total}")
+
+
+            return sums.items()
+        else:
+            return [f"HTTP Error {response.status}: {response.reason}"]
+    else:
+        return sums.items()
+
+
+
+    # data_encoded = parse.urlencode(payload).encode('utf-8')
+    # req = request.Request(url, data=data_encoded, headers=headers, method='POST')
+    # try:
+    #     print(req.get_full_url()+"        ------------------+++")
+    #     with request.urlopen(req) as response:
+    #     # Check if the request was successful (HTTP status code 2xx)
+            
+    #         if 200 <= response.status < 300:
+    #            # Read and print the response content
+    #            response_data = response.read().decode('utf-8')
+    #            return StringToDictinory(response_data)
               
-            else:
-                return [f"HTTP Error {response.status}: {response.reason}"]
-    except request.HTTPError as e:
-        return [f"HTTP Error {e.code}: {e.reason}"]
-    except request.URLError as e:
-        return ["URL Error: {e.reason}"]
+    #         else:
+    #             return [f"HTTP Error {response.status}: {response.reason}"]
+    # except request.HTTPError as e:
+    #     return [f"HTTP Error {e.code}: {e.reason}"]
+    # except request.URLError as e:
+    #     return ["URL Error: {e.reason}"]
 
 
 def StringToDictinory(text):
@@ -111,7 +157,9 @@ def RecipeTitle(request, pk):
     recipe = get_object_or_404(Recipe, RecipeId=pk)
     print("-----------------")
     print(recipe.ingredients.all())
-    result=example_request_view(recipe.ingredients.all())
+    if recipe.ingredients:
+        print("xxxxxx               xxXxxxxXXxX")
+        result=example_request_view(recipe.ingredients.all())
     print("ccccccccccc")
     print(result)
     
