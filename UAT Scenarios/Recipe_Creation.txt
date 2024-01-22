@@ -1,0 +1,55 @@
+User Acceptance Testing (UAT) Scenario: Recipe Creation
+Objective:
+Ensure that users can successfully create a new recipe with associated ingredients and steps.
+
+Steps:
+1-Access the Recipe Creation Page:
+
+2-Open the web browser and navigate to the application.
+Go to the "Add Recipe" page.
+
+3-Fill in Recipe Details:
+
+Enter the recipe title, preparation time, cook time, and rating.
+Upload a photo for the recipe.
+
+4-Add Ingredients:
+
+Enter the amount, type, and name for each ingredient.
+Add at least two different ingredients.
+
+5-Add Cooking Steps:
+
+Enter a description for each cooking step.
+Add at least two different cooking steps.
+
+6-Submit the Recipe:
+
+Click the "Submit Recipe" button to save the recipe.
+
+7-Verify Recipe Details:
+
+Ensure that newly added recipe opened after submitting.
+Ensure that the recipe title, photo, preparation time, cook time, and rating are displayed correctly.
+
+8-Verify Ingredients:
+
+Check if the listed ingredients match the ones entered during creation.
+
+9-Verify Cooking Steps:
+
+Check if the listed cooking steps match the ones entered during creation.
+
+9-Verify Nutritions:
+
+Check the nutritions of the recipe created at the bottom of the page.
+
+10- Check your Recipe at the home page:
+
+Go back to home page by clicking "I'm Cooking" at the top left of the page.
+Ensure that your newly added recipe is created at the top left of all recipes.
+Ensure that photo and recipe title displayed correctly.
+
+
+
+
