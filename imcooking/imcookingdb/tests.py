@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import Recipe
+from .models import Recipe,Ingredient,IngredientTypes
+from .views import example_request_view
+
 
 # from .forms import RecipeForm, IngredientFormSet, StepFormSet
 
@@ -38,3 +40,36 @@ class TestViewsCase(TestCase):
 #                      'steps-0-description': 'Chop the vegetables'}
 #         formset = StepFormSet(data=form_data, prefix='steps')
 #         self.assertTrue(formset.is_valid())
+        
+
+
+class TestAPICase(TestCase):
+   
+
+    def test_api(self):
+        test1=Ingredient()
+        test1.name="garlic powder"
+        test1.Amount=1.0
+        test1.type=IngredientTypes()
+        test1.type.TypeName="tablespoon"
+        result={
+        "calories(cal)":31.44,
+        "total_fat(g)":0.07,
+        "saturated_fat(g)":0.02,
+        "cholesterol(mg)":0.0,
+        "sodium(mg)":5.7,
+        "total_carbohydrate(g)":6.91,
+        "dietary_fiber(g)":0.86,
+        "sugars(g)":0.23,
+        "protein(g)":1.57,
+        "potassium(mg)":113.33,
+        "p(mg)":39.33
+        }
+        test=[]
+        test.append(test1)
+        
+        self.assertEqual(example_request_view(test),result.items())
+
+
+        
+        
